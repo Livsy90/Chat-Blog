@@ -11,7 +11,6 @@ import PhotosUI
 struct LoginView: View {
     
     @State private var selectedItem: PhotosPickerItem?
-    
     @ObservedObject private var vm = LoginViewModel()
     
     var body: some View {
@@ -37,15 +36,16 @@ struct LoginView: View {
                                 }
                             }
                             .frame(width: 160, height: 160)
-                                .clipped()
-                                .cornerRadius(80)
-                                .font(.system(size: 80))
-                                .overlay(RoundedRectangle(cornerRadius: 80).stroke(lineWidth: 3))
-                                .shadow(radius: 5 )
+                            .clipped()
+                            .cornerRadius(80)
+                            .font(.system(size: 80))
+                            .overlay(RoundedRectangle(cornerRadius: 80).stroke(lineWidth: 3))
+                            .shadow(radius: 5 )
                         }
                         .onChange(of: selectedItem) { newValue in
                             Task {
                                 if let imageData = try? await newValue?.loadTransferable(type: Data.self), let image = UIImage(data: imageData) {
+                                    vm.imageData = imageData
                                     vm.selectedImage = Image(uiImage: image)
                                 }
                             }
@@ -73,6 +73,10 @@ struct LoginView: View {
                         .background(Color.blue)
                         .cornerRadius(5)
                         .padding(.top)
+                    
+                    Text(vm.errorMessage)
+                        .foregroundColor(.red)
+                        .font(.system(size: 14))
                 }
                 .padding(.horizontal)
             }.background(Color(white: 0.92).ignoresSafeArea())
@@ -81,7 +85,9 @@ struct LoginView: View {
     }
     
     private func handleCreateAccount() {
-        
+        vm.createAccountOrSignIn {
+            print("On success account creation code here....")
+        }
     }
 }
 
