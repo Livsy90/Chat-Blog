@@ -9,14 +9,7 @@ import SwiftUI
 
 struct ChatLogView: View {
     
-    @ObservedObject private var vm: ChatLogViewModel
-    
-    private let user: ChatUser
-    
-    init(user: ChatUser) {
-        self.user = user
-        self.vm = .init(user: user)
-    }
+    @ObservedObject var vm: ChatLogViewModel
     
     var body: some View {
         ScrollView {
@@ -34,10 +27,13 @@ struct ChatLogView: View {
             }
         }
         .padding(.bottom, 64)
-        .navigationTitle(user.email)
+        .navigationTitle(vm.user?.email ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.init(white: 0, alpha: 0.05)))
         .overlay(ChatLogBottomSendBarView(text: $vm.text, sendMessageHandler: vm.sendMessage), alignment: .bottom)
+        .onDisappear {
+            vm.user = nil
+        }
     }
 }
 

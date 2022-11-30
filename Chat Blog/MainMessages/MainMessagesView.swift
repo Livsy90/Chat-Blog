@@ -10,6 +10,7 @@ import SwiftUI
 struct MainMessagesView: View {
     
     @ObservedObject var vm = MainMessageViewModel()
+    private var chatLogViewModel = ChatLogViewModel(user: nil)
     
     var body: some View {
         NavigationView {
@@ -23,12 +24,15 @@ struct MainMessagesView: View {
                                 NewMessageUsersView { user in
                                     vm.selectedChatUser = user
                                     vm.shouldShowChatLogView.toggle()
+                                    chatLogViewModel.user = user
+                                    chatLogViewModel.listener?.remove()
+                                    chatLogViewModel.fetchMessages()
                                 }
                             })
                     }
                     
-                    if let user = vm.selectedChatUser {
-                        NavigationLink("", destination: ChatLogView(user: user), isActive: $vm.shouldShowChatLogView)
+                    if let _ = vm.selectedChatUser {
+                        NavigationLink("", destination: ChatLogView(vm: chatLogViewModel), isActive: $vm.shouldShowChatLogView)
                     }
                     
                     Spacer()
@@ -56,6 +60,9 @@ struct MainMessagesView: View {
                 Text("Log Out")
             }))
             .navigationTitle("Main Messages")
+            .onAppear {
+                chatLogViewModel.listener?.remove()
+            }
         }
     }
     

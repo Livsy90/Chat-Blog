@@ -12,11 +12,11 @@ final class ChatLogViewModel: ObservableObject {
     @Published var text = ""
     @Published var errorMessage = ""
     @Published var messages = [Message]()
-    private var listener: ListenerRegistration?
+    var listener: ListenerRegistration?
     
     var user: ChatUser?
     
-    init(user: ChatUser) {
+    init(user: ChatUser?) {
         self.user = user
         fetchMessages()
     }
