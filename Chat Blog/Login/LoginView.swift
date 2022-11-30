@@ -12,6 +12,7 @@ struct LoginView: View {
     
     @State private var selectedItem: PhotosPickerItem?
     @ObservedObject private var vm = LoginViewModel()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationView {
@@ -86,7 +87,7 @@ struct LoginView: View {
     
     private func handleCreateAccount() {
         vm.createAccountOrSignIn {
-            print("On success account creation code here....")
+            presentationMode.wrappedValue.dismiss()
         }
     }
 }
