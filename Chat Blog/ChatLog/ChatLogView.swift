@@ -9,25 +9,35 @@ import SwiftUI
 
 struct ChatLogView: View {
     
-    @ObservedObject private var vm = ChatLogViewModel()
+    @ObservedObject private var vm: ChatLogViewModel
     
     private let user: ChatUser
     
     init(user: ChatUser) {
         self.user = user
+        self.vm = .init(user: user)
     }
     
     var body: some View {
         ScrollView {
             Spacer().frame(height: 8)
-            ForEach(0..<10) { num in
-                BlueMessageView()
+            ForEach(vm.messages, id: \.self) { message in
+                LazyVGrid(columns: [GridItem(.flexible())], spacing: 10) {
+                    if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
+                        BlueMessageView(message: message.text)
+                    } else {
+                        WhiteMessageView(message: message.text)
+                    }
+                }
+                .padding(.top, 8)
+                .padding(.horizontal)
             }
-        }.padding(.bottom, 64)
-            .navigationTitle(user.email)
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color(.init(white: 0, alpha: 0.05)))
-            .overlay(ChatLogBottomSendBarView(text: $vm.text, sendMessageHandler: vm.sendMessage), alignment: .bottom)
+        }
+        .padding(.bottom, 64)
+        .navigationTitle(user.email)
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color(.init(white: 0, alpha: 0.05)))
+        .overlay(ChatLogBottomSendBarView(text: $vm.text, sendMessageHandler: vm.sendMessage), alignment: .bottom)
     }
 }
 
@@ -67,19 +77,39 @@ private struct ChatLogBottomSendBarView: View {
 }
 
 private struct BlueMessageView: View {
+    
+    @State var message: String
+    
     var body: some View {
         HStack {
             Spacer()
-            Text("Here is a sample message text that will be sent out to our recipient")
-                .foregroundColor(.white)
-                .font(.system(size: 16))
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(Color.blue)
-                .cornerRadius(6)
-                .frame(maxWidth: 300)
-        }.padding(.top, 8)
-            .padding(.trailing, 4)
+            HStack {
+                Text(message)
+                    .foregroundColor(.white)
+            }
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(6)
+        }
+    }
+}
+
+private struct WhiteMessageView: View {
+    
+    @State var message: String
+    
+    var body: some View {
+        HStack {
+            HStack {
+                Text(message)
+                    .foregroundColor(.black)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(6)
+            Spacer()
+        }
+        
     }
 }
 
