@@ -11,14 +11,20 @@ struct NewMessageUsersView: View {
     
     @ObservedObject var vm = NewMessageUsersViewModel()
     @Environment(\.presentationMode) var presentationMode
-
+    private let didSelectUser: ((ChatUser?) -> Void)?
+    
+    init(didSelectUser: ((ChatUser?) -> Void)?) {
+        self.didSelectUser = didSelectUser
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 ForEach(vm.users, id: \.self) { user in
                     
                     Button(action: {
-                      presentationMode.wrappedValue.dismiss()
+                        didSelectUser?(user)
+                        presentationMode.wrappedValue.dismiss()
                     }, label: {
                         VStack {
                             HStack(spacing: 16) {

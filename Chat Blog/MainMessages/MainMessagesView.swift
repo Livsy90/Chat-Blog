@@ -20,8 +20,15 @@ struct MainMessagesView: View {
                     } else {
                         MessagesList()
                             .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
-                                NewMessageUsersView()
+                                NewMessageUsersView { user in
+                                    vm.selectedChatUser = user
+                                    vm.shouldShowChatLogView.toggle()
+                                }
                             })
+                    }
+                    
+                    if let user = vm.selectedChatUser {
+                        NavigationLink("", destination: ChatLogView(user: user), isActive: $vm.shouldShowChatLogView)
                     }
                     
                     Spacer()
