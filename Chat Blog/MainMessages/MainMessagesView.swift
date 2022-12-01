@@ -39,8 +39,12 @@ struct MainMessagesView: View {
                         .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
                             LoginView()
                         })
-                }.overlay(
-                    Button(action: { vm.shouldShowNewMessageModal.toggle() }, label: {
+                }
+                .frame(maxWidth: .infinity)
+                .overlay(
+                    Button(action: {
+                        vm.shouldShowNewMessageModal.toggle()
+                    }, label: {
                         HStack {
                             Spacer()
                             Text("New Message")

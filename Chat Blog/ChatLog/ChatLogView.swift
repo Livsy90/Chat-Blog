@@ -30,6 +30,7 @@ struct ChatLogView: View {
         .navigationTitle(vm.user?.email ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.init(white: 0, alpha: 0.05)))
+        .frame(maxWidth: .infinity)
         .overlay(ChatLogBottomSendBarView(text: $vm.text, sendMessageHandler: vm.sendMessage), alignment: .bottom)
         .onDisappear {
             vm.user = nil
