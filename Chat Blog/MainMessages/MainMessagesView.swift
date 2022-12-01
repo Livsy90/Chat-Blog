@@ -23,6 +23,7 @@ struct MainMessagesView: View {
                             vm.selectedChatUser = user
                             vm.shouldShowChatLogView.toggle()
                         }
+                        .preferredColorScheme(.light)
                         .environmentObject(chatLogViewModel)
                         .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
                             NewMessageUsersView { user in
@@ -36,12 +37,13 @@ struct MainMessagesView: View {
                     }
                     
                     if let _ = vm.selectedChatUser {
-                        NavigationLink("", destination: ChatLogView(vm: chatLogViewModel), isActive: $vm.shouldShowChatLogView)
+                        NavigationLink("", destination: ChatLogView(vm: chatLogViewModel).preferredColorScheme(.light), isActive: $vm.shouldShowChatLogView)
                     }
                     
                     Spacer()
                         .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
                             LoginView()
+                                .preferredColorScheme(.light)
                         })
                 }
                 .frame(maxWidth: .infinity)

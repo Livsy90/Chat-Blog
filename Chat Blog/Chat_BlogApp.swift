@@ -12,6 +12,7 @@ struct Chat_BlogApp: App {
     var body: some Scene {
         WindowGroup {
             MainMessagesView()
+                .preferredColorScheme(.light)
         }
     }
 }

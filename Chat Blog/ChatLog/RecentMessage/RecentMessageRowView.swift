@@ -30,24 +30,33 @@ struct RecentMessageRowView: View {
             didSelectUser?(vm.user)
         }, label: {
             HStack(spacing: 16) {
-                AsyncImage(url: URL(string: vm.user?.profileImageUrl ?? ""))
-                    .scaledToFill()
-                    .frame(width: 44, height: 44)
-                    .background(Color.black)
-                    .cornerRadius(44)
-                    .overlay(RoundedRectangle(cornerRadius: 40).stroke(Color.black, lineWidth: 1))
+                AsyncImage(
+                    url: URL(string: vm.user?.profileImageUrl ?? ""),
+                    content: { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 44, height: 44)
+                    },
+                    placeholder: {
+                        ProgressView()
+                            .frame(width: 60, height: 60)
+                    }
+                )
+                .background(Color.gray)
+                .cornerRadius(22)
+                .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.black, lineWidth: 1))
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(vm.user?.email ?? "")
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.system(size: 13, weight: .semibold))
                     Text(recentMessage.text)
-                        .font(.system(size: 13, weight: .regular))
+                        .font(.system(size: 12, weight: .regular))
                 }
                 .foregroundColor(.primary)
                 
                 Spacer()
             }
         })
-        .padding(.horizontal)
+        .padding(.horizontal, 4)
     }
 }

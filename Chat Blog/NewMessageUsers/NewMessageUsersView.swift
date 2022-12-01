@@ -27,11 +27,20 @@ struct NewMessageUsersView: View {
                     }, label: {
                         VStack {
                             HStack(spacing: 16) {
-                                AsyncImage(url: URL(string: user.profileImageUrl))
-                                    .scaledToFill()
-                                    .frame(width: 60, height: 60)
-                                    .cornerRadius(60)
-                                    .overlay(RoundedRectangle(cornerRadius: 60).stroke(lineWidth: 2))
+                                AsyncImage(
+                                    url: URL(string: user.profileImageUrl),
+                                    content: { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 60, height: 60)
+                                    },
+                                    placeholder: {
+                                        ProgressView()
+                                            .frame(width: 60, height: 60)
+                                    }
+                                )
+                                .cornerRadius(30)
+                                .overlay(RoundedRectangle(cornerRadius: 30).stroke(lineWidth: 2))
                                 Text(user.email)
                                 Spacer()
                                 
