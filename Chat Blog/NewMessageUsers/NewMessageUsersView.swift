@@ -21,7 +21,6 @@ struct NewMessageUsersView: View {
         NavigationView {
             ScrollView {
                 ForEach(vm.users, id: \.self) { user in
-                    
                     Button(action: {
                         didSelectUser?(user)
                         presentationMode.wrappedValue.dismiss()

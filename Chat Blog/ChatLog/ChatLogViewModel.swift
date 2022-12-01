@@ -9,12 +9,12 @@ import SwiftUI
 import Firebase
 
 final class ChatLogViewModel: ObservableObject {
+    
     @Published var text = ""
     @Published var errorMessage = ""
     @Published var messages = [Message]()
+    @Published var user: ChatUser?
     var listener: ListenerRegistration?
-    
-    var user: ChatUser?
     
     init(user: ChatUser?) {
         self.user = user

@@ -19,16 +19,20 @@ struct MainMessagesView: View {
                     if FirebaseManager.shared.auth.currentUser?.uid == nil {
                         Text("User is not signed in")
                     } else {
-                        MessagesList(recentMessages: vm.messagesList)
-                            .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
-                                NewMessageUsersView { user in
-                                    vm.selectedChatUser = user
-                                    vm.shouldShowChatLogView.toggle()
-                                    chatLogViewModel.user = user
-                                    chatLogViewModel.listener?.remove()
-                                    chatLogViewModel.fetchMessages()
-                                }
-                            })
+                        MessagesList(recentMessages: vm.messagesList) { user in
+                            vm.selectedChatUser = user
+                            vm.shouldShowChatLogView.toggle()
+                        }
+                        .environmentObject(chatLogViewModel)
+                        .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
+                            NewMessageUsersView { user in
+                                vm.selectedChatUser = user
+                                vm.shouldShowChatLogView.toggle()
+                                chatLogViewModel.user = user
+                                chatLogViewModel.listener?.remove()
+                                chatLogViewModel.fetchMessages()
+                            }
+                        })
                     }
                     
                     if let _ = vm.selectedChatUser {
