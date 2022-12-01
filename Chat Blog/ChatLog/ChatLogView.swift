@@ -47,28 +47,24 @@ private struct ChatLogBottomSendBarView: View {
         VStack {
             Spacer()
             HStack(spacing: 12) {
-                Image(systemName: "photo.on.rectangle.angled")
-                    .font(.system(size: 24))
-                    .foregroundColor(Color(.darkGray))
+                TextField("Enter message", text: $text, axis: .vertical)
+                    .lineLimit(1...3)
+                    .padding(.horizontal)
+                    .padding(.vertical, 2)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                ZStack {
-                    TextEditorPlaceholder()
-                    TextEditor(text: $text)
-                        .opacity(text.isEmpty ? 0.5 : 1)
-                }
-                .frame(height: 40)
-                Spacer()
                 Button(action: sendMessageHandler, label: {
                     Text("Send")
                         .foregroundColor(.white)
-                        .padding(.vertical, 8)
+                        .padding(.vertical, 6)
                         .padding(.horizontal, 12)
                         .font(.system(size: 14, weight: .bold))
-                }).background(Color.blue)
-                    .cornerRadius(3)
+                })
+                .background(Color.blue)
+                .cornerRadius(3)
             }
             .padding(12)
-            .background(Color(.lightGray))
+            .background(Color(.systemGray5))
         }
     }
 }
@@ -107,19 +103,5 @@ private struct WhiteMessageView: View {
             Spacer()
         }
         
-    }
-}
-
-private struct TextEditorPlaceholder: View {
-    
-    var body: some View {
-        HStack {
-            Text("Enter message")
-                .foregroundColor(Color(.gray))
-                .font(.system(size: 17))
-                .padding(.leading, 5)
-                .padding(.top, -4)
-            Spacer()
-        }
     }
 }

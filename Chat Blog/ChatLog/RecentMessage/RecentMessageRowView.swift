@@ -46,9 +46,6 @@ struct RecentMessageRowView: View {
                 .foregroundColor(.primary)
                 
                 Spacer()
-                Text("2m ago")
-                    .font(.system(size: 12))
-                    .foregroundColor(.primary)
             }
         })
         .padding(.horizontal)
