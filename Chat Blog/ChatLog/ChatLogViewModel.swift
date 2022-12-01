@@ -66,6 +66,7 @@ final class ChatLogViewModel: ObservableObject {
                 return
             }
             print("Message send complete")
+            self.persistRecentMessageToFirestore(text: self.text)
             self.text = ""
         })
         
@@ -91,6 +92,44 @@ final class ChatLogViewModel: ObservableObject {
             FirebaseConstants.fromId: uid,
             FirebaseConstants.toId: user.uid
         ] as [String: Any]
+    }
+    
+    private func persistRecentMessageToFirestore(text: String) {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+        guard let user = user else { return }
+        let data = [
+            FirebaseConstants.timestamp: Firebase.Timestamp(),
+            FirebaseConstants.fromId: uid,
+            FirebaseConstants.toId: user.uid,
+            FirebaseConstants.text: text
+        ] as [String: Any]
+        
+        let doc = FirebaseManager.shared.firestore
+            .collection(FirebaseConstants.recentMessages)
+            .document(uid)
+            .collection(FirebaseConstants.messages)
+            .document(user.uid)
+        
+        doc.setData(data) { (err) in
+            if let err = err {
+                self.errorMessage = err.localizedDescription
+                return
+            }
+            print("Recent message for current user saved")
+        }
+        
+        let receivingUserDoc = FirebaseManager.shared.firestore
+            .collection(FirebaseConstants.recentMessages)
+            .document(user.uid)
+            .collection(FirebaseConstants.messages)
+            .document(uid)
+        receivingUserDoc.setData(data) { (err) in
+            if let err = err {
+                self.errorMessage = err.localizedDescription
+                return
+            }
+            print("Recent message for recipient saved")
+        }
     }
     
 }

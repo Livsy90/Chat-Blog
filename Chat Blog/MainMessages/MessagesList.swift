@@ -8,17 +8,20 @@
 import SwiftUI
 
 struct MessagesList: View {
+    
+    let recentMessages: [RecentMessage]
+    
     var body: some View {
-        ForEach(0..<10, id: \.self) { num in
+        ForEach(recentMessages) { recentMessage in
             HStack(spacing: 16) {
                 Spacer()
                     .frame(width: 40, height: 40)
-                    .background(Color.black)
+                    .background(Color.green)
                     .cornerRadius(40)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Dummy Username")
+                    Text(recentMessage.fromId)
                         .font(.system(size: 15, weight: .semibold))
-                    Text("Message that user sent or received")
+                    Text(recentMessage.text)
                         .font(.system(size: 13, weight: .regular))
                 }
                 

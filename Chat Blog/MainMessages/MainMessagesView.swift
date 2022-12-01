@@ -19,7 +19,7 @@ struct MainMessagesView: View {
                     if FirebaseManager.shared.auth.currentUser?.uid == nil {
                         Text("User is not signed in")
                     } else {
-                        MessagesList()
+                        MessagesList(recentMessages: vm.messagesList)
                             .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
                                 NewMessageUsersView { user in
                                     vm.selectedChatUser = user
