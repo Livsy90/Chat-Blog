@@ -93,7 +93,7 @@ private struct BlueMessageView: View {
             }
             .padding()
             .background(Color.blue)
-            .cornerRadius(6)
+            .clipShape(ChatBubble(isMyMsg: true))
         }
     }
 }
@@ -110,9 +110,21 @@ private struct WhiteMessageView: View {
             }
             .padding()
             .background(Color.white)
-            .cornerRadius(6)
+            .clipShape(ChatBubble(isMyMsg: false))
             Spacer()
         }
         
+    }
+}
+
+struct ChatBubble: Shape {
+
+    var isMyMsg : Bool
+    
+    func path(in rect: CGRect) -> Path {
+        
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: [.topLeft, .topRight, isMyMsg ? .bottomLeft : .bottomRight], cornerRadii: CGSize(width: 15, height: 15))
+        
+        return Path(path.cgPath)
     }
 }
