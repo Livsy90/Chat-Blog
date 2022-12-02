@@ -39,17 +39,17 @@ final class MainMessageViewModel: ObservableObject {
                 return
             }
             
-            snapshot?.documentChanges.forEach({ (change) in
+            snapshot?.documentChanges.forEach { change in
                 let docId = change.document.documentID
                 let data = change.document.data()
                 let recentMessage = RecentMessage(docId: docId, dictionary: data)
                 self.recentMessages[docId] = recentMessage
                 print("Appended recent message")
-            })
+            }
             
-            self.messagesList = self.recentMessages.map({ (key, value) in
-                return value
-            }).sorted(by: {$0.timestamp.dateValue() > $1.timestamp.dateValue()})
+            self.messagesList = self.recentMessages
+                .map { key, value in return value }
+                .sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
         }
     }
     

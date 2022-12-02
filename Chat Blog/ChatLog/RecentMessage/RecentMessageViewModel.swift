@@ -15,7 +15,7 @@ final class RecentMessageViewModel: ObservableObject {
         FirebaseManager.shared.firestore
             .collection("users")
             .document(recentMessage.docId)
-            .getDocument { (document, err) in
+            .getDocument { document, err in
                 if let err = err {
                     print("Failed to fetch user:", err)
                     return

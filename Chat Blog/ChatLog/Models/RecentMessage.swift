@@ -14,6 +14,12 @@ struct RecentMessage: Identifiable {
     let timestamp: Timestamp
     let text: String
     
+    var timeAgo: String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter.localizedString(for: timestamp.dateValue(), relativeTo: Date())
+    }
+    
     init(docId: String, dictionary: [String: Any]) {
         self.docId = docId
         self.fromId = dictionary[FirebaseConstants.fromId] as? String ?? ""

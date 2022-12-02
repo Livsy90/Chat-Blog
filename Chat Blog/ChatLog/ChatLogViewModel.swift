@@ -23,9 +23,11 @@ final class ChatLogViewModel: ObservableObject {
     
     func fetchMessages() {
         print("Fetching messages")
-        messages = []
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-        guard let user = user else { return }
+        messages.removeAll()
+        guard
+            let uid = FirebaseManager.shared.auth.currentUser?.uid,
+            let user = user
+        else { return }
         
         let collection = FirebaseManager.shared.firestore
             .collection(FirebaseConstants.messages)
@@ -39,12 +41,12 @@ final class ChatLogViewModel: ObservableObject {
                 return
             }
             
-            snapshot?.documentChanges.forEach({ (change) in
+            snapshot?.documentChanges.forEach { change in
                 if change.type == .added {
                     self.messages.append(.init(dictionary: change.document.data()))
                     print("Added message")
                 }
-            })
+            }
         }
     }
     
