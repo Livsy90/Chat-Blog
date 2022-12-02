@@ -32,7 +32,7 @@ final class MainMessageViewModel: ObservableObject {
             .document(uid)
             .collection(FirebaseConstants.messages)
             .order(by: FirebaseConstants.timestamp)
-        listener = collection.addSnapshotListener { (snapshot, err) in
+        listener = collection.addSnapshotListener { snapshot, err in
             
             if let err = err {
                 self.errorMessage = err.localizedDescription

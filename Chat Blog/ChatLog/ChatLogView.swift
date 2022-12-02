@@ -30,7 +30,7 @@ struct ChatLogView: View {
                 }
             }
             .padding(.bottom, 64)
-            .navigationTitle(vm.user?.email ?? "")
+            .navigationTitle(vm.user?.username ?? "")
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(.init(white: 0, alpha: 0.05)))
             .frame(maxWidth: .infinity)

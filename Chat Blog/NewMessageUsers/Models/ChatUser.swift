@@ -10,6 +10,11 @@ import Foundation
 struct ChatUser: Hashable {
     let email, profileImageUrl, uid: String
     
+    var username: String {
+        let components = email.components(separatedBy: "@")
+        return components[0]
+    }
+    
     init(dictionary: [String: Any]) {
         self.email = dictionary["email"] as? String ?? ""
         self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""

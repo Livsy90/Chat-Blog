@@ -40,6 +40,7 @@ struct RecentMessageRowView: View {
                     placeholder: {
                         ProgressView()
                             .frame(width: 44, height: 44)
+                            .background(Color.white)
                     }
                 )
                 .background(Color.gray)
@@ -47,7 +48,7 @@ struct RecentMessageRowView: View {
                 .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.gray, lineWidth: 0.5))
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(vm.user?.email ?? "")
+                    Text(vm.user?.username ?? "")
                         .font(.system(size: 13, weight: .semibold))
                     Text(recentMessage.text)
                         .font(.system(size: 12, weight: .regular))
@@ -57,7 +58,7 @@ struct RecentMessageRowView: View {
                 Spacer()
                 
                 Text(recentMessage.timeAgo)
-                    .font(.system(size: 12, weight: .bold))
+                    .font(.system(size: 12, weight: .semibold))
             }
         })
         .padding(.horizontal, 4)
