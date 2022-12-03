@@ -30,6 +30,7 @@
 		D671B15B2937C2C4006F062E /* ChatLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B15A2937C2C4006F062E /* ChatLogViewModel.swift */; };
 		D671B15E2937C4D2006F062E /* FirebaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B15D2937C4D2006F062E /* FirebaseConstants.swift */; };
 		D671B1602937C725006F062E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B15F2937C725006F062E /* Message.swift */; };
+		D6C37FFB293BB35500C5A5F5 /* View+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C37FFA293BB35500C5A5F5 /* View+adds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		D671B15A2937C2C4006F062E /* ChatLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogViewModel.swift; sourceTree = "<group>"; };
 		D671B15D2937C4D2006F062E /* FirebaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConstants.swift; sourceTree = "<group>"; };
 		D671B15F2937C725006F062E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D6C37FFA293BB35500C5A5F5 /* View+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+adds.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		D60B9D772936526600BAEB01 /* Chat Blog */ = {
 			isa = PBXGroup;
 			children = (
+				D6C37FF9293BB34B00C5A5F5 /* Extensions */,
 				D671B1572937C2AE006F062E /* ChatLog */,
 				D671B14F2937B4CC006F062E /* NewMessageUsers */,
 				D671B1482937B197006F062E /* MainMessages */,
@@ -185,6 +188,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		D6C37FF9293BB34B00C5A5F5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D6C37FFA293BB35500C5A5F5 /* View+adds.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -274,6 +285,7 @@
 				D671B15E2937C4D2006F062E /* FirebaseConstants.swift in Sources */,
 				D671B1542937B52F006F062E /* ChatUser.swift in Sources */,
 				D60B9D882936532100BAEB01 /* LoginView.swift in Sources */,
+				D6C37FFB293BB35500C5A5F5 /* View+adds.swift in Sources */,
 				D60B9D962936600B00BAEB01 /* FirebaseManager.swift in Sources */,
 				D60B9D7B2936526600BAEB01 /* ContentView.swift in Sources */,
 				D60B9D792936526600BAEB01 /* Chat_BlogApp.swift in Sources */,

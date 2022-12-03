@@ -47,21 +47,6 @@ struct MainMessagesView: View {
                         })
                 }
                 .frame(maxWidth: .infinity)
-                .overlay(
-                    Button(action: {
-                        vm.shouldShowNewMessageModal.toggle()
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Text("New Message")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.white)
-                                .padding(.vertical, 12)
-                            Spacer()
-                        }.background(Color.blue)
-                            .cornerRadius(24)
-                            .shadow(color: Color(#colorLiteral(red: 0, green: 0.4784809947, blue: 0.9998757243, alpha: 0.2469350594)), radius: 10)
-                    }).padding(), alignment: .bottom)
             }
             .navigationBarItems(leading: Button(action: {
                 try? FirebaseManager.shared.auth.signOut()
@@ -69,9 +54,19 @@ struct MainMessagesView: View {
             }, label: {
                 Text("Log Out")
             }))
-            .navigationTitle("Main Messages")
+            .navigationTitle("Messages")
             .onAppear {
                 chatLogViewModel.listener?.remove()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        vm.shouldShowNewMessageModal.toggle()
+                    }, label: {
+                        Image(systemName: "square.and.pencil")
+                    })
+                    .tint(.primary)
+                }
             }
         }
     }

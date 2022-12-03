@@ -25,7 +25,7 @@ struct ChatLogView: View {
                                 .tag(index)
                         }
                     }
-                    .padding(.top, 8)
+                    .padding(.vertical, 8)
                     .padding(.horizontal)
                 }
             }
@@ -40,6 +40,11 @@ struct ChatLogView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: vm.messages) { _ in
+                withAnimation {
+                    value.scrollTo(vm.messages.count - 1)
+                }
+            }
+            .onReceive(keyboardPublisher) { _ in
                 withAnimation {
                     value.scrollTo(vm.messages.count - 1)
                 }
@@ -65,16 +70,13 @@ private struct ChatLogBottomSendBarView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button(action: sendMessageHandler, label: {
-                    Text("Send")
-                        .foregroundColor(.white)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 12)
-                        .font(.system(size: 14, weight: .bold))
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(text.isEmpty ? Color.gray : Color.blue)
                 })
-                .background(Color.blue)
-                .cornerRadius(3)
+                .disabled(text.isEmpty)
+                .padding(.trailing)
             }
-            .padding(12)
+            .padding()
             .background(Color(.systemGray5))
         }
     }
