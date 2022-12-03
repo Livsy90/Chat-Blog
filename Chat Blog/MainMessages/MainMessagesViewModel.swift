@@ -25,6 +25,13 @@ final class MainMessageViewModel: ObservableObject {
         listenForRecentMessages()
     }
     
+    func update() {
+        recentMessages.removeAll()
+        messagesList.removeAll()
+        rowData.removeAll()
+        listenForRecentMessages()
+    }
+    
     private func configureMessageListData() {
         rowData.removeAll()
         messagesList.forEach { recentMessage in

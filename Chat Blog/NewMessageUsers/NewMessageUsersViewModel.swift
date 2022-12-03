@@ -5,7 +5,7 @@
 //  Created by Livsy on 30.11.2022.
 //
 
-import SwiftUI
+import Foundation
 
 final class NewMessageUsersViewModel: ObservableObject {
     

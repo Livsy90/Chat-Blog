@@ -10,7 +10,7 @@ import SwiftUI
 struct MainMessagesView: View {
     
     @ObservedObject var vm = MainMessageViewModel()
-    private var chatLogViewModel = ChatLogViewModel(user: nil)
+    private var chatDataSource = ChatDataSource.shared
     
     var body: some View {
         NavigationView {
@@ -24,26 +24,28 @@ struct MainMessagesView: View {
                             vm.shouldShowChatLogView.toggle()
                         }
                         .preferredColorScheme(.light)
-                        .environmentObject(chatLogViewModel)
+                        .environmentObject(chatDataSource)
                         .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
                             NewMessageUsersView { user in
                                 vm.selectedChatUser = user
                                 vm.shouldShowChatLogView.toggle()
-                                chatLogViewModel.user = user
-                                chatLogViewModel.listener?.remove()
-                                chatLogViewModel.fetchMessages()
+                                chatDataSource.user = user
+                                chatDataSource.listener?.remove()
+                                chatDataSource.fetchMessages()
                             }
                         })
                     }
                     
                     if let _ = vm.selectedChatUser {
-                        NavigationLink("", destination: ChatLogView(vm: chatLogViewModel).preferredColorScheme(.light), isActive: $vm.shouldShowChatLogView)
+                        NavigationLink("", destination: ChatLogView(chatDataSource: chatDataSource).preferredColorScheme(.light), isActive: $vm.shouldShowChatLogView)
                     }
                     
                     Spacer()
                         .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
-                            LoginView()
-                                .preferredColorScheme(.light)
+                            LoginView() {
+                                vm.update()
+                            }
+                            .preferredColorScheme(.light)
                         })
                 }
                 .frame(maxWidth: .infinity)
@@ -51,12 +53,13 @@ struct MainMessagesView: View {
             .navigationBarItems(leading: Button(action: {
                 try? FirebaseManager.shared.auth.signOut()
                 vm.shouldShowLoginModal = true
+                chatDataSource.reset()
             }, label: {
                 Text("Log Out")
             }))
             .navigationTitle("Messages")
             .onAppear {
-                chatLogViewModel.listener?.remove()
+                chatDataSource.listener?.remove()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

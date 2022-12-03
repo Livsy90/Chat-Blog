@@ -13,6 +13,7 @@ struct LoginView: View {
     @State private var selectedItem: PhotosPickerItem?
     @ObservedObject private var vm = LoginViewModel()
     @Environment(\.presentationMode) var presentationMode
+    let didFinishLogin: (() -> Void)?
     
     var body: some View {
         NavigationView {
@@ -70,23 +71,28 @@ struct LoginView: View {
                                 .font(.system(size: 16, weight: .semibold))
                             Spacer()
                         }
-                    }).padding()
-                        .background(Color.blue)
-                        .cornerRadius(5)
-                        .padding(.top)
+                    })
+                    .disabled(!vm.isButtonEnabled())
+                    .padding()
+                    .background(vm.isButtonEnabled() ? Color.blue : Color(.systemGray5))
+                    .cornerRadius(5)
+                    .padding(.top)
                     
                     Text(vm.errorMessage)
                         .foregroundColor(.red)
                         .font(.system(size: 14))
                 }
-                .padding(.horizontal)
-            }.background(Color(white: 0.92).ignoresSafeArea())
-                .navigationTitle(vm.isLoginMode ? "Log in" : "Create Account")
+                .padding()
+            }
+            .scrollDismissesKeyboard(.interactively)
+            .background(Color(white: 0.92).ignoresSafeArea())
+            .navigationTitle(vm.isLoginMode ? "Log in" : "Create Account")
         }
     }
     
     private func handleCreateAccount() {
         vm.createAccountOrSignIn {
+            didFinishLogin?()
             presentationMode.wrappedValue.dismiss()
         }
     }
@@ -94,6 +100,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(didFinishLogin: nil)
     }
 }

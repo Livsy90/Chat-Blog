@@ -5,10 +5,11 @@
 //  Created by Livsy on 30.11.2022.
 //
 
-import SwiftUI
 import Firebase
 
-final class ChatLogViewModel: ObservableObject {
+final class ChatDataSource: ObservableObject {
+    
+    static let shared = ChatDataSource(user: nil)
     
     @Published var text = ""
     @Published var errorMessage = ""
@@ -19,6 +20,12 @@ final class ChatLogViewModel: ObservableObject {
     init(user: ChatUser?) {
         self.user = user
         fetchMessages()
+    }
+    
+    func reset() {
+        user = nil
+        messages.removeAll()
+        text.removeAll()
     }
     
     func fetchMessages() {

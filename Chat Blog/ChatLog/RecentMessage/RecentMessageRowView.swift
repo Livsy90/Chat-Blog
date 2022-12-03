@@ -9,13 +9,13 @@ import SwiftUI
 
 struct RecentMessageRowView: View {
     let data: MessagesList.RowData
-    @EnvironmentObject private var chatLogViewModel: ChatLogViewModel
     let didSelectUser: ((ChatUser?) -> Void)?
+    @EnvironmentObject private var chatDataSource: ChatDataSource
     
     var body: some View {
         Button(action: {
-            chatLogViewModel.user = data.user
-            chatLogViewModel.fetchMessages()
+            chatDataSource.user = data.user
+            chatDataSource.fetchMessages()
             didSelectUser?(data.user)
         }, label: {
             HStack(spacing: 16) {

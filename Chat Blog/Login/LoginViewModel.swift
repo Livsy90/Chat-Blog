@@ -18,6 +18,14 @@ final class LoginViewModel: ObservableObject {
 
     @Published var errorMessage = ""
     
+    func isButtonEnabled() -> Bool {
+        if isLoginMode {
+            return !email.isEmpty && !password.isEmpty
+        } else {
+            return selectedImage != nil && !email.isEmpty && !password.isEmpty
+        }
+    }
+    
     func createAccountOrSignIn(success: @escaping () -> Void) {
         if isLoginMode {
             FirebaseManager.shared.auth.signIn(withEmail: email, password: password) { (res, err) in

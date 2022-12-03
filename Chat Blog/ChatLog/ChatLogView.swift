@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ChatLogView: View {
     
-    @ObservedObject var vm: ChatLogViewModel
+    @ObservedObject var chatDataSource: ChatDataSource
     
     var body: some View {
         ScrollViewReader { value in
             ScrollView {
                 Spacer().frame(height: 8)
-                ForEach(Array(zip(vm.messages.indices, vm.messages)), id: \.0) { index, message in
-                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 10) {
+                ForEach(Array(zip(chatDataSource.messages.indices, chatDataSource.messages)), id: \.0) { index, message in
+                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 2) {
                         if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
                             BlueMessageView(message: message.text)
                                 .tag(index)
@@ -30,23 +30,23 @@ struct ChatLogView: View {
                 }
             }
             .padding(.bottom, 64)
-            .navigationTitle(vm.user?.username ?? "")
+            .navigationTitle(chatDataSource.user?.username ?? "")
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(.init(white: 0, alpha: 0.05)))
             .frame(maxWidth: .infinity)
-            .overlay(ChatLogBottomSendBarView(text: $vm.text, sendMessageHandler: vm.sendMessage), alignment: .bottom)
+            .overlay(ChatLogBottomSendBarView(text: $chatDataSource.text, sendMessageHandler: chatDataSource.sendMessage), alignment: .bottom)
             .onDisappear {
-                vm.user = nil
+                chatDataSource.user = nil
             }
             .scrollDismissesKeyboard(.interactively)
-            .onChange(of: vm.messages) { _ in
+            .onChange(of: chatDataSource.messages) { _ in
                 withAnimation {
-                    value.scrollTo(vm.messages.count - 1)
+                    value.scrollTo(chatDataSource.messages.count - 1)
                 }
             }
             .onReceive(keyboardPublisher) { _ in
                 withAnimation {
-                    value.scrollTo(vm.messages.count - 1)
+                    value.scrollTo(chatDataSource.messages.count - 1)
                 }
             }
         }
