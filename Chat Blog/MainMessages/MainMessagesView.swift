@@ -19,7 +19,7 @@ struct MainMessagesView: View {
                     if FirebaseManager.shared.auth.currentUser?.uid == nil {
                         Text("User is not signed in")
                     } else {
-                        MessagesList(recentMessages: vm.messagesList) { user in
+                        MessagesList(data: vm.rowData) { user in
                             vm.selectedChatUser = user
                             vm.shouldShowChatLogView.toggle()
                         }

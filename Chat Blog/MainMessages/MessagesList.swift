@@ -9,14 +9,20 @@ import SwiftUI
 
 struct MessagesList: View {
     
-    let recentMessages: [RecentMessage]
+    struct RowData: Identifiable {
+        var id: String
+        var user: ChatUser
+        var message: RecentMessage
+    }
+    
+    let data: [RowData]
     let didSelectUser: ((ChatUser?) -> Void)?
     var body: some View {
         
         VStack {
-            ForEach(recentMessages) { recentMessage in
+            ForEach(data) { item in
                 VStack {
-                    RecentMessageRowView(recentMessage: recentMessage) { user in
+                    RecentMessageRowView(data: item) { user in
                         didSelectUser?(user)
                     }
                     .padding(.horizontal)

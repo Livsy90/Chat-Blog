@@ -22,7 +22,7 @@ final class ChatLogViewModel: ObservableObject {
     }
     
     func fetchMessages() {
-        print("Fetching messages")
+        // print("Fetching messages")
         messages.removeAll()
         guard
             let uid = FirebaseManager.shared.auth.currentUser?.uid,
@@ -44,19 +44,20 @@ final class ChatLogViewModel: ObservableObject {
             snapshot?.documentChanges.forEach { change in
                 if change.type == .added {
                     self.messages.append(.init(dictionary: change.document.data()))
-                    print("Added message")
+                    //  print("Added message")
                 }
             }
         }
     }
     
     func sendMessage() {
-        print("Sending: \(text)")
+        // print("Sending: \(text)")
         self.errorMessage = ""
         
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-        guard let user = user else { return }
-        guard let data = textMessageData() else { return }
+        guard let user = user,
+              let uid = FirebaseManager.shared.auth.currentUser?.uid,
+              let data = textMessageData()
+        else { return }
         
         let doc = FirebaseManager.shared.firestore
             .collection("messages").document(uid)
@@ -67,7 +68,7 @@ final class ChatLogViewModel: ObservableObject {
                 self.errorMessage = err.localizedDescription
                 return
             }
-            print("Message send complete")
+            // print("Message send complete")
             self.persistRecentMessageToFirestore(text: self.text)
             self.text = ""
         })
@@ -80,7 +81,7 @@ final class ChatLogViewModel: ObservableObject {
                 self.errorMessage = err.localizedDescription
                 return
             }
-            print("Recipient document set complete")
+            // print("Recipient document set complete")
         })
     }
     
@@ -117,7 +118,7 @@ final class ChatLogViewModel: ObservableObject {
                 self.errorMessage = err.localizedDescription
                 return
             }
-            print("Recent message for current user saved")
+            // print("Recent message for current user saved")
         }
         
         let receivingUserDoc = FirebaseManager.shared.firestore
@@ -130,7 +131,7 @@ final class ChatLogViewModel: ObservableObject {
                 self.errorMessage = err.localizedDescription
                 return
             }
-            print("Recent message for recipient saved")
+            // print("Recent message for recipient saved")
         }
     }
     
