@@ -67,10 +67,12 @@ final class MainMessageViewModel: ObservableObject {
                // print("Appended recent message")
             }
             
-            self?.messagesList = self?.recentMessages
-                .map { key, value in return value }
-                .sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() }) ?? []
-            self?.configureMessageListData()
+            withAnimation(.spring()) {
+                self?.messagesList = self?.recentMessages
+                    .map { key, value in return value }
+                    .sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() }) ?? []
+                self?.configureMessageListData()
+            }
         }
     }
     
