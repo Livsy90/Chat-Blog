@@ -8,30 +8,19 @@
 import SwiftUI
 
 struct RecentMessageRowView: View {
-    let recentMessage: RecentMessage
-    
-    @ObservedObject var vm: RecentMessageViewModel
+    let data: MessagesList.RowData
     @EnvironmentObject private var chatLogViewModel: ChatLogViewModel
     let didSelectUser: ((ChatUser?) -> Void)?
     
-    init(
-        recentMessage: RecentMessage,
-        _ didSelectUser: ((ChatUser?) -> Void)?
-    ) {
-        self.recentMessage = recentMessage
-        self.didSelectUser = didSelectUser
-        vm = .init(recentMessage: recentMessage)
-    }
-    
     var body: some View {
         Button(action: {
-            chatLogViewModel.user = vm.user
+            chatLogViewModel.user = data.user
             chatLogViewModel.fetchMessages()
-            didSelectUser?(vm.user)
+            didSelectUser?(data.user)
         }, label: {
             HStack(spacing: 16) {
                 AsyncImage(
-                    url: URL(string: vm.user?.profileImageUrl ?? ""),
+                    url: URL(string: data.user.profileImageUrl),
                     content: { image in
                         image.resizable()
                             .aspectRatio(contentMode: .fit)
@@ -48,16 +37,16 @@ struct RecentMessageRowView: View {
                 .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.gray, lineWidth: 0.5))
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(vm.user?.username ?? "")
+                    Text(data.user.username)
                         .font(.system(size: 13, weight: .semibold))
-                    Text(recentMessage.text)
+                    Text(data.message.text)
                         .font(.system(size: 12, weight: .regular))
                 }
                 .foregroundColor(.primary)
                 
                 Spacer()
                 
-                Text(recentMessage.timeAgo)
+                Text(data.message.timeAgo)
                     .font(.system(size: 12, weight: .semibold))
             }
         })

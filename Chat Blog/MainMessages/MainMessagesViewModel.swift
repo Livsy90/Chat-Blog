@@ -16,12 +16,32 @@ final class MainMessageViewModel: ObservableObject {
     @Published var selectedChatUser: ChatUser?
     @Published var errorMessage = ""
     @Published var messagesList = [RecentMessage]()
+    @Published var rowData = [MessagesList.RowData]()
     var recentMessages = [String: RecentMessage]()
     private var listener: ListenerRegistration?
     
     init() {
         shouldShowLoginModal = FirebaseManager.shared.auth.currentUser?.uid == nil
         listenForRecentMessages()
+    }
+    
+    private func configureMessageListData() {
+        rowData.removeAll()
+        messagesList.forEach { recentMessage in
+            FirebaseManager.shared.firestore
+                .collection("users")
+                .document(recentMessage.docId)
+                .getDocument { [weak self] document, err in
+                    if let err = err {
+                        print("Failed to fetch user:", err)
+                        return
+                    }
+                    
+                    guard let data = document?.data() else { return }
+                    let user = ChatUser(dictionary: data)
+                    self?.rowData.append(.init(id: recentMessage.docId, user: user, message: recentMessage))
+                }
+        }
     }
     
     private func listenForRecentMessages() {
@@ -32,10 +52,10 @@ final class MainMessageViewModel: ObservableObject {
             .document(uid)
             .collection(FirebaseConstants.messages)
             .order(by: FirebaseConstants.timestamp)
-        listener = collection.addSnapshotListener { snapshot, err in
+        listener = collection.addSnapshotListener { [weak self] snapshot, err in
             
             if let err = err {
-                self.errorMessage = err.localizedDescription
+                self?.errorMessage = err.localizedDescription
                 return
             }
             
@@ -43,13 +63,14 @@ final class MainMessageViewModel: ObservableObject {
                 let docId = change.document.documentID
                 let data = change.document.data()
                 let recentMessage = RecentMessage(docId: docId, dictionary: data)
-                self.recentMessages[docId] = recentMessage
-                print("Appended recent message")
+                self?.recentMessages[docId] = recentMessage
+               // print("Appended recent message")
             }
             
-            self.messagesList = self.recentMessages
+            self?.messagesList = self?.recentMessages
                 .map { key, value in return value }
-                .sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })
+                .sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() }) ?? []
+            self?.configureMessageListData()
         }
     }
     
