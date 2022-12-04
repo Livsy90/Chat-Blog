@@ -18,7 +18,7 @@ struct NewMessageUsersView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 ForEach(vm.users, id: \.self) { user in
                     Button(action: {
@@ -31,17 +31,20 @@ struct NewMessageUsersView: View {
                                     url: URL(string: user.profileImageUrl),
                                     content: { image in
                                         image.resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 60, height: 60)
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 44, height: 44)
                                     },
                                     placeholder: {
-                                        ProgressView()
-                                            .frame(width: 60, height: 60)
+                                        ActivityIndicator()
+                                            .foregroundColor(Color(.systemGray5))
+                                            .frame(width: 44, height: 44)
+                                            .background(Color.white)
                                     }
                                 )
                                 .cornerRadius(30)
-                                .overlay(RoundedRectangle(cornerRadius: 30).stroke(lineWidth: 2))
-                                Text(user.email)
+                                
+                                Text(user.username)
+                                    .font(.system(size: 15, weight: .semibold))
                                 Spacer()
                                 
                             }.padding(.horizontal)

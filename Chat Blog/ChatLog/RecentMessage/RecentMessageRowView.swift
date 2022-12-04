@@ -23,18 +23,17 @@ struct RecentMessageRowView: View {
                     url: URL(string: data.user.profileImageUrl),
                     content: { image in
                         image.resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 44, height: 44)
                     },
                     placeholder: {
-                        ProgressView()
+                        ActivityIndicator()
+                            .foregroundColor(Color(.systemGray5))
                             .frame(width: 44, height: 44)
                             .background(Color.white)
                     }
                 )
-                .background(Color.gray)
                 .cornerRadius(22)
-                .overlay(RoundedRectangle(cornerRadius: 22).stroke(Color.gray, lineWidth: 0.5))
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(data.user.username)

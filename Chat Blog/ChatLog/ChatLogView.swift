@@ -12,41 +12,69 @@ struct ChatLogView: View {
     @ObservedObject var chatDataSource: ChatDataSource
     
     var body: some View {
-        ScrollViewReader { value in
-            ScrollView {
-                Spacer().frame(height: 8)
-                ForEach(Array(zip(chatDataSource.messages.indices, chatDataSource.messages)), id: \.0) { index, message in
-                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 2) {
-                        if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
-                            BlueMessageView(message: message.text)
-                                .tag(index)
-                        } else {
-                            WhiteMessageView(message: message.text)
-                                .tag(index)
+        
+        VStack {
+            Color.clear.frame(height: 14)
+            
+            ScrollViewReader { value in
+                ScrollView {
+                    Spacer().frame(height: 8)
+                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 10) {
+                        ForEach(Array(zip(chatDataSource.messages.indices, chatDataSource.messages)), id: \.0) { index, message in
+                            if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
+                                BlueMessageView(message: message.text)
+                                    .tag(index)
+                            } else {
+                                WhiteMessageView(message: message.text)
+                                    .tag(index)
+                            }
                         }
+                        .padding(.horizontal)
                     }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
                 }
-            }
-            .padding(.bottom, 64)
-            .navigationTitle(chatDataSource.user?.username ?? "")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color(.init(white: 0, alpha: 0.05)))
-            .frame(maxWidth: .infinity)
-            .overlay(ChatLogBottomSendBarView(text: $chatDataSource.text, sendMessageHandler: chatDataSource.sendMessage), alignment: .bottom)
-            .onDisappear {
-                chatDataSource.user = nil
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .onChange(of: chatDataSource.messages) { _ in
-                withAnimation {
-                    value.scrollTo(chatDataSource.messages.count - 1)
+                .padding(.bottom, 88)
+                .padding(.top, 1)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        AsyncImage(
+                            url: URL(string: chatDataSource.user?.profileImageUrl ?? ""),
+                            content: { image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 44, height: 44)
+                            },
+                            placeholder: {
+                                ActivityIndicator()
+                                    .foregroundColor(Color(.systemGray5))
+                                    .frame(width: 44, height: 44)
+                                    .background(Color.white)
+                            }
+                        )
+                        .cornerRadius(22)
+                    }
+                    ToolbarItem(placement: .principal) {
+                        Text(chatDataSource.user?.username ?? "")
+                            .font(.system(size: 15, weight: .semibold))
+                        
+                    }
                 }
-            }
-            .onReceive(keyboardPublisher) { _ in
-                withAnimation {
-                    value.scrollTo(chatDataSource.messages.count - 1)
+                .navigationBarTitleDisplayMode(.inline)
+                .background(Color(.systemGray5))
+                .frame(maxWidth: .infinity)
+                .overlay(ChatLogBottomSendBarView(text: $chatDataSource.text, sendMessageHandler: chatDataSource.sendMessage), alignment: .bottom)
+                .onDisappear {
+                    chatDataSource.user = nil
+                }
+                .scrollDismissesKeyboard(.interactively)
+                .onChange(of: chatDataSource.messages) { _ in
+                    withAnimation {
+                        value.scrollTo(chatDataSource.messages.count - 1)
+                    }
+                }
+                .onReceive(keyboardPublisher) { _ in
+                    withAnimation {
+                        value.scrollTo(chatDataSource.messages.count - 1)
+                    }
                 }
             }
         }
@@ -64,7 +92,7 @@ private struct ChatLogBottomSendBarView: View {
             Spacer()
             HStack(spacing: 12) {
                 TextField("Enter message", text: $text, axis: .vertical)
-                    .lineLimit(1...3)
+                    .lineLimit(1...2)
                     .padding(.horizontal)
                     .padding(.vertical, 2)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -120,7 +148,7 @@ private struct WhiteMessageView: View {
 }
 
 struct ChatBubble: Shape {
-
+    
     var isMyMsg : Bool
     
     func path(in rect: CGRect) -> Path {

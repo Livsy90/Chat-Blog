@@ -16,7 +16,7 @@ struct LoginView: View {
     let didFinishLogin: (() -> Void)?
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     Picker(selection: $vm.isLoginMode, label: Text("Picker"), content: {

@@ -13,7 +13,7 @@ struct MainMessagesView: View {
     private var chatDataSource = ChatDataSource.shared
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 ScrollView {
                     if FirebaseManager.shared.auth.currentUser?.uid == nil {
@@ -36,10 +36,6 @@ struct MainMessagesView: View {
                         })
                     }
                     
-                    if let _ = vm.selectedChatUser {
-                        NavigationLink("", destination: ChatLogView(chatDataSource: chatDataSource).preferredColorScheme(.light), isActive: $vm.shouldShowChatLogView)
-                    }
-                    
                     Spacer()
                         .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
                             LoginView() {
@@ -50,18 +46,22 @@ struct MainMessagesView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .navigationBarItems(leading: Button(action: {
-                try? FirebaseManager.shared.auth.signOut()
-                vm.shouldShowLoginModal = true
-                chatDataSource.reset()
-            }, label: {
-                Text("Log Out")
-            }))
             .navigationTitle("Messages")
             .onAppear {
                 chatDataSource.listener?.remove()
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        try? FirebaseManager.shared.auth.signOut()
+                        vm.shouldShowLoginModal = true
+                        chatDataSource.reset()
+                    }, label: {
+                        Text("Log Out")
+                    })
+                    .tint(.primary)
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         vm.shouldShowNewMessageModal.toggle()
@@ -70,6 +70,11 @@ struct MainMessagesView: View {
                     })
                     .tint(.primary)
                 }
+            }
+            .toolbarBackground(Color.red)
+            .navigationDestination(isPresented: $vm.shouldShowChatLogView) {
+                ChatLogView(chatDataSource: chatDataSource)
+                    .preferredColorScheme(.light)
             }
         }
     }
