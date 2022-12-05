@@ -14,7 +14,7 @@ struct ChatLogView: View {
     var body: some View {
         
         VStack {
-            Color.clear.frame(height: 14)
+            Color.clear.frame(height: 1)
             
             ScrollViewReader { value in
                 ScrollView {
@@ -61,14 +61,22 @@ struct ChatLogView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .background(Color(.systemGray5))
                 .frame(maxWidth: .infinity)
-                .overlay(ChatLogBottomSendBarView(text: $chatDataSource.text, sendMessageHandler: chatDataSource.sendMessage), alignment: .bottom)
+                .overlay(ChatLogBottomSendBarView(
+                    text: $chatDataSource.text,
+                    isSending: $chatDataSource.isSendingMessage,
+                    sendMessageHandler: chatDataSource.sendMessage
+                ), alignment: .bottom)
                 .onDisappear {
                     chatDataSource.user = nil
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: chatDataSource.messages) { _ in
-                    withAnimation {
+                    if chatDataSource.isInitial {
                         value.scrollTo(chatDataSource.messages.count - 1)
+                    } else {
+                        withAnimation {
+                            value.scrollTo(chatDataSource.messages.count - 1)
+                        }
                     }
                 }
                 .onReceive(keyboardPublisher) { _ in
@@ -85,24 +93,33 @@ struct ChatLogView: View {
 private struct ChatLogBottomSendBarView: View {
     
     @Binding var text: String
+    @Binding var isSending: Bool
+    
     let sendMessageHandler: () -> ()
     
     var body: some View {
         VStack {
             Spacer()
-            HStack(spacing: 12) {
+            HStack(spacing: 2) {
                 TextField("Enter message", text: $text, axis: .vertical)
                     .lineLimit(1...2)
                     .padding(.horizontal)
                     .padding(.vertical, 2)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
                 
                 Button(action: sendMessageHandler, label: {
-                    Image(systemName: "paperplane.fill")
-                        .foregroundColor(text.isEmpty ? Color.gray : Color.blue)
+                    ZStack {
+                        Circle()
+                            .fill(text.isEmpty ? Color.gray : Color.blue)
+                            .frame(width: 30, height: 30)
+                        
+                        Image(systemName: "arrow.up")
+                            .foregroundColor(text.isEmpty ? Color(.systemGray5) : Color.white)
+                    }
                 })
-                .disabled(text.isEmpty)
-                .padding(.trailing)
+                .disabled(text.isEmpty || isSending)
+                .padding(.trailing, 6)
             }
             .padding()
             .background(Color(.systemGray5))
@@ -149,7 +166,7 @@ private struct WhiteMessageView: View {
 
 struct ChatBubble: Shape {
     
-    var isMyMsg : Bool
+    var isMyMsg: Bool
     
     func path(in rect: CGRect) -> Path {
         

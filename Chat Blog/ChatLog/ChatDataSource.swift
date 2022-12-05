@@ -15,6 +15,8 @@ final class ChatDataSource: ObservableObject {
     @Published var errorMessage = ""
     @Published var messages = [Message]()
     @Published var user: ChatUser?
+    @Published var isInitial = true
+    @Published var isSendingMessage = false
     var listener: ListenerRegistration?
     
     init(user: ChatUser?) {
@@ -42,9 +44,28 @@ final class ChatDataSource: ObservableObject {
             .collection(user.uid)
             .order(by: FirebaseConstants.timestamp)
         
-        listener = collection.addSnapshotListener { snapshot, err in
+        listener = collection.addSnapshotListener { [weak self] snapshot, err in
+            guard let self = self else { return }
             if let err = err {
                 self.errorMessage = err.localizedDescription
+                return
+            }
+            
+            if self.messages.isEmpty {
+                self.isInitial = true
+                let messagesArray = snapshot?.documentChanges.compactMap {
+                    if $0.type == .added {
+                       return Message(dictionary: $0.document.data())
+                    } else {
+                        return nil
+                    }
+                }
+                
+                self.messages = messagesArray ?? []
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.isInitial = self.messages.isEmpty
+                }
                 return
             }
             
@@ -60,12 +81,15 @@ final class ChatDataSource: ObservableObject {
     func sendMessage() {
         // print("Sending: \(text)")
         self.errorMessage = ""
+        self.isSendingMessage = true
+        let savedText = self.text
         
         guard let user = user,
               let uid = FirebaseManager.shared.auth.currentUser?.uid,
               let data = textMessageData()
         else { return }
         
+        self.text = ""
         let doc = FirebaseManager.shared.firestore
             .collection("messages").document(uid)
             .collection(user.uid).document()
@@ -73,11 +97,12 @@ final class ChatDataSource: ObservableObject {
         doc.setData(data, completion: { err in
             if let err = err {
                 self.errorMessage = err.localizedDescription
+                self.text = savedText
                 return
             }
             // print("Message send complete")
-            self.persistRecentMessageToFirestore(text: self.text)
-            self.text = ""
+            self.isSendingMessage = false
+            self.persistRecentMessageToFirestore(text: savedText)
         })
         
         let receivingUserDoc = FirebaseManager.shared.firestore

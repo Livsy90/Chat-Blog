@@ -27,6 +27,7 @@ struct MessagesList: View {
                     }
                     .padding(.horizontal)
                     Divider()
+                        .padding(.horizontal)
                 }
             }
             .padding(.top, 8)

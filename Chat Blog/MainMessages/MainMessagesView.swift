@@ -71,7 +71,6 @@ struct MainMessagesView: View {
                     .tint(.primary)
                 }
             }
-            .toolbarBackground(Color.red)
             .navigationDestination(isPresented: $vm.shouldShowChatLogView) {
                 ChatLogView(chatDataSource: chatDataSource)
                     .preferredColorScheme(.light)
