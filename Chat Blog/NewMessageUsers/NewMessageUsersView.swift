@@ -50,14 +50,14 @@ struct NewMessageUsersView: View {
                             }.padding(.horizontal)
                             
                             Divider()
-                                .padding(.top, 8)
-                                .padding(.bottom, 8)
+                                .padding()
                         }
                     })
                     .foregroundColor(.black)
                 }
-            }.navigationTitle("New Message")
-            
+            }
+            .navigationTitle("New Message")
+            .navigationBarTitleDisplayMode(.inline)
         }
         
     }

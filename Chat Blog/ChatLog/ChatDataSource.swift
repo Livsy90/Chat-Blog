@@ -10,11 +10,17 @@ import UIKit
 
 final class ChatDataSource: ObservableObject {
     
+    struct RowData: Identifiable {
+        var id: String
+        var user: ChatUser
+        var message: RecentMessage
+    }
+    
     static let shared = ChatDataSource(user: nil)
     
     @Published var text = ""
     @Published var errorMessage = ""
-    @Published var messages = [Message]()
+    @Published var messages = [RecentMessage]()
     @Published var user: ChatUser?
     @Published var isInitial = true
     @Published var isSendingMessage = false
@@ -24,6 +30,12 @@ final class ChatDataSource: ObservableObject {
         self.user = user
         fetchMessages()
     }
+    
+    func hasUnread(userID: String) -> Bool {
+       false
+    }
+    
+    func readAll(userID: String) {}
     
     func reset() {
         user = nil
@@ -56,7 +68,7 @@ final class ChatDataSource: ObservableObject {
                 self.isInitial = true
                 let messagesArray = snapshot?.documentChanges.compactMap {
                     if $0.type == .added {
-                       return Message(dictionary: $0.document.data())
+                        return RecentMessage(docId: $0.document.documentID, dictionary: $0.document.data())
                     } else {
                         return nil
                     }
@@ -72,7 +84,7 @@ final class ChatDataSource: ObservableObject {
             
             snapshot?.documentChanges.forEach { change in
                 if change.type == .added {
-                    self.messages.append(.init(dictionary: change.document.data()))
+                    self.messages.append(.init(docId: change.document.documentID, dictionary: change.document.data()))
                     //  print("Added message")
                 }
             }

@@ -20,12 +20,13 @@
 		D60B9D962936600B00BAEB01 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60B9D952936600B00BAEB01 /* FirebaseManager.swift */; };
 		D632910D293E33970024FEE1 /* String+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D632910C293E33970024FEE1 /* String+adds.swift */; };
 		D632910F293E34090024FEE1 /* UIImage+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D632910E293E34090024FEE1 /* UIImage+adds.swift */; };
+		D6329111293E43EE0024FEE1 /* UserDefaults+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6329110293E43EE0024FEE1 /* UserDefaults+adds.swift */; };
+		D6329113293E52800024FEE1 /* Date+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6329112293E52800024FEE1 /* Date+adds.swift */; };
 		D63E0D6E293D12AD002BC3DE /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63E0D6D293D12AD002BC3DE /* ActivityIndicator.swift */; };
 		D65C60322939046F00AAE189 /* RecentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C60312939046F00AAE189 /* RecentMessage.swift */; };
 		D65C603529390F4000AAE189 /* RecentMessageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C603429390F4000AAE189 /* RecentMessageRowView.swift */; };
 		D671B14A2937B1A6006F062E /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B1492937B1A6006F062E /* MainMessagesView.swift */; };
 		D671B14C2937B1B9006F062E /* MainMessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B14B2937B1B9006F062E /* MainMessagesViewModel.swift */; };
-		D671B14E2937B202006F062E /* MessagesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B14D2937B202006F062E /* MessagesList.swift */; };
 		D671B1512937B4D7006F062E /* NewMessageUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B1502937B4D7006F062E /* NewMessageUsersView.swift */; };
 		D671B1542937B52F006F062E /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B1532937B52F006F062E /* ChatUser.swift */; };
 		D671B1562937B62A006F062E /* NewMessageUsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B1552937B62A006F062E /* NewMessageUsersViewModel.swift */; };
@@ -48,12 +49,13 @@
 		D60B9D952936600B00BAEB01 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		D632910C293E33970024FEE1 /* String+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+adds.swift"; sourceTree = "<group>"; };
 		D632910E293E34090024FEE1 /* UIImage+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+adds.swift"; sourceTree = "<group>"; };
+		D6329110293E43EE0024FEE1 /* UserDefaults+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+adds.swift"; sourceTree = "<group>"; };
+		D6329112293E52800024FEE1 /* Date+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+adds.swift"; sourceTree = "<group>"; };
 		D63E0D6D293D12AD002BC3DE /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		D65C60312939046F00AAE189 /* RecentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessage.swift; sourceTree = "<group>"; };
 		D65C603429390F4000AAE189 /* RecentMessageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessageRowView.swift; sourceTree = "<group>"; };
 		D671B1492937B1A6006F062E /* MainMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesView.swift; sourceTree = "<group>"; };
 		D671B14B2937B1B9006F062E /* MainMessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesViewModel.swift; sourceTree = "<group>"; };
-		D671B14D2937B202006F062E /* MessagesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesList.swift; sourceTree = "<group>"; };
 		D671B1502937B4D7006F062E /* NewMessageUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageUsersView.swift; sourceTree = "<group>"; };
 		D671B1532937B52F006F062E /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
 		D671B1552937B62A006F062E /* NewMessageUsersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageUsersViewModel.swift; sourceTree = "<group>"; };
@@ -159,7 +161,6 @@
 			children = (
 				D671B1492937B1A6006F062E /* MainMessagesView.swift */,
 				D671B14B2937B1B9006F062E /* MainMessagesViewModel.swift */,
-				D671B14D2937B202006F062E /* MessagesList.swift */,
 			);
 			path = MainMessages;
 			sourceTree = "<group>";
@@ -209,6 +210,8 @@
 				D6C37FFA293BB35500C5A5F5 /* View+adds.swift */,
 				D632910C293E33970024FEE1 /* String+adds.swift */,
 				D632910E293E34090024FEE1 /* UIImage+adds.swift */,
+				D6329110293E43EE0024FEE1 /* UserDefaults+adds.swift */,
+				D6329112293E52800024FEE1 /* Date+adds.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -295,7 +298,6 @@
 				D671B1512937B4D7006F062E /* NewMessageUsersView.swift in Sources */,
 				D60B9D8A2936532800BAEB01 /* LoginViewModel.swift in Sources */,
 				D671B1562937B62A006F062E /* NewMessageUsersViewModel.swift in Sources */,
-				D671B14E2937B202006F062E /* MessagesList.swift in Sources */,
 				D65C60322939046F00AAE189 /* RecentMessage.swift in Sources */,
 				D671B14A2937B1A6006F062E /* MainMessagesView.swift in Sources */,
 				D671B1592937C2B6006F062E /* ChatLogView.swift in Sources */,
@@ -305,9 +307,11 @@
 				D632910D293E33970024FEE1 /* String+adds.swift in Sources */,
 				D6C37FFB293BB35500C5A5F5 /* View+adds.swift in Sources */,
 				D60B9D962936600B00BAEB01 /* FirebaseManager.swift in Sources */,
+				D6329113293E52800024FEE1 /* Date+adds.swift in Sources */,
 				D63E0D6E293D12AD002BC3DE /* ActivityIndicator.swift in Sources */,
 				D60B9D7B2936526600BAEB01 /* ContentView.swift in Sources */,
 				D60B9D792936526600BAEB01 /* Chat_BlogApp.swift in Sources */,
+				D6329111293E43EE0024FEE1 /* UserDefaults+adds.swift in Sources */,
 				D671B1602937C725006F062E /* Message.swift in Sources */,
 				D65C603529390F4000AAE189 /* RecentMessageRowView.swift in Sources */,
 				D671B15B2937C2C4006F062E /* ChatDataSource.swift in Sources */,

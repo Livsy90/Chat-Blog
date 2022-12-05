@@ -7,7 +7,7 @@
 
 import Firebase
 
-struct RecentMessage: Identifiable {
+struct RecentMessage: Identifiable, Hashable {
     var id: String { docId }
     
     let fromId, toId, docId: String
@@ -18,6 +18,10 @@ struct RecentMessage: Identifiable {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: timestamp.dateValue(), relativeTo: Date())
+    }
+    
+    var time: String {
+        timestamp.dateValue().time
     }
     
     init(docId: String, dictionary: [String: Any]) {

@@ -16,13 +16,18 @@ final class MainMessageViewModel: ObservableObject {
     @Published var selectedChatUser: ChatUser?
     @Published var errorMessage = ""
     @Published var messagesList = [RecentMessage]()
-    @Published var rowData = [MessagesList.RowData]()
+    @Published var rowData = [ChatDataSource.RowData]()
     var recentMessages = [String: RecentMessage]()
     private var listener: ListenerRegistration?
+    private var isInitial = true
     
     init() {
         shouldShowLoginModal = FirebaseManager.shared.auth.currentUser?.uid == nil
         listenForRecentMessages()
+    }
+    
+    func reloadData() {
+        rowData = rowData
     }
     
     func update() {

@@ -73,6 +73,7 @@ struct ChatLogView: View {
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: chatDataSource.messages) { _ in
+                    chatDataSource.readAll(userID: chatDataSource.user?.uid ?? "")
                     if chatDataSource.isInitial {
                         value.scrollTo(chatDataSource.messages.count - 1)
                     } else {

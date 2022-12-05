@@ -14,38 +14,29 @@ struct MainMessagesView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                ScrollView {
-                    if FirebaseManager.shared.auth.currentUser?.uid == nil {
-                        Text("User is not signed in")
-                    } else {
-                        MessagesList(data: vm.rowData) { user in
+            List {
+                Section {
+                    ForEach(vm.rowData) { item in
+                        RecentMessageRowView(data: item) { user in
                             vm.selectedChatUser = user
                             vm.shouldShowChatLogView.toggle()
                         }
-                        .preferredColorScheme(.light)
-                        .environmentObject(chatDataSource)
-                        .fullScreenCover(isPresented: $vm.shouldShowNewMessageModal, content: {
-                            NewMessageUsersView { user in
-                                vm.selectedChatUser = user
-                                vm.shouldShowChatLogView.toggle()
-                                chatDataSource.user = user
-                                chatDataSource.listener?.remove()
-                                chatDataSource.fetchMessages()
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                chatDataSource.readAll(userID: item.user.uid)
+                                vm.reloadData()
+                            } label: {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(Color.white)
                             }
-                        })
+                            .tint(.blue)
+                        }
                     }
-                    
-                    Spacer()
-                        .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
-                            LoginView() {
-                                vm.update()
-                            }
-                            .preferredColorScheme(.light)
-                        })
                 }
-                .frame(maxWidth: .infinity)
+                    .preferredColorScheme(.light)
+                    .environmentObject(chatDataSource)
             }
+            .frame(maxWidth: .infinity)
             .navigationTitle("Messages")
             .onAppear {
                 chatDataSource.listener?.remove()
@@ -75,6 +66,21 @@ struct MainMessagesView: View {
                 ChatLogView(chatDataSource: chatDataSource)
                     .preferredColorScheme(.light)
             }
+            .sheet(isPresented: $vm.shouldShowNewMessageModal, content: {
+                NewMessageUsersView { user in
+                    vm.selectedChatUser = user
+                    vm.shouldShowChatLogView.toggle()
+                    chatDataSource.user = user
+                    chatDataSource.listener?.remove()
+                    chatDataSource.fetchMessages()
+                }
+            })
+            .fullScreenCover(isPresented: $vm.shouldShowLoginModal, content: {
+                LoginView() {
+                    vm.update()
+                }
+                .preferredColorScheme(.light)
+            })
         }
     }
     

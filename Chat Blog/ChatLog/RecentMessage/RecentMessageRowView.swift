@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecentMessageRowView: View {
-    let data: MessagesList.RowData
+    let data: ChatDataSource.RowData
     let didSelectUser: ((ChatUser?) -> Void)?
     @EnvironmentObject private var chatDataSource: ChatDataSource
     
@@ -52,8 +52,17 @@ struct RecentMessageRowView: View {
                 
                 Spacer()
                 
-                Text(data.message.timeAgo)
-                    .font(.system(size: 12, weight: .semibold))
+                HStack {
+                    Text(data.message.timeAgo)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.black)
+                    
+                    if chatDataSource.hasUnread(userID: data.user.uid) {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 12)
+                    }
+                }
             }
         })
         .padding(.horizontal, 4)
