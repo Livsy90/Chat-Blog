@@ -38,8 +38,15 @@ struct RecentMessageRowView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(data.user.username)
                         .font(.system(size: 13, weight: .semibold))
-                    Text(data.message.text)
-                        .font(.system(size: 12, weight: .regular))
+                    if let image = data.message.text.base64Image {
+                        Image(uiImage: image.preparingThumbnail(of: .init(width: 100, height: 100)) ?? UIImage())
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 12, maxHeight: 12)
+                    } else {
+                        Text(data.message.text)
+                            .font(.system(size: 12, weight: .regular))
+                    }
                 }
                 .foregroundColor(.primary)
                 

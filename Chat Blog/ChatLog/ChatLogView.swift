@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ChatLogView: View {
     
@@ -14,7 +15,7 @@ struct ChatLogView: View {
     var body: some View {
         
         VStack {
-            Color.clear.frame(height: 1)
+            Spacer().frame(height: 1)
             
             ScrollViewReader { value in
                 ScrollView {
@@ -64,7 +65,8 @@ struct ChatLogView: View {
                 .overlay(ChatLogBottomSendBarView(
                     text: $chatDataSource.text,
                     isSending: $chatDataSource.isSendingMessage,
-                    sendMessageHandler: chatDataSource.sendMessage
+                    sendMessageHandler: chatDataSource.sendMessage,
+                    sendImageHandler: { image in chatDataSource.sendImage(image) }
                 ), alignment: .bottom)
                 .onDisappear {
                     chatDataSource.user = nil
@@ -94,13 +96,28 @@ private struct ChatLogBottomSendBarView: View {
     
     @Binding var text: String
     @Binding var isSending: Bool
+    @State private var selectedItem: PhotosPickerItem?
     
-    let sendMessageHandler: () -> ()
+    let sendMessageHandler: () -> Void
+    let sendImageHandler: (UIImage) -> ()
     
     var body: some View {
         VStack {
             Spacer()
             HStack(spacing: 2) {
+                
+                PhotosPicker(selection: $selectedItem) {
+                    Image(systemName: "photo")
+                }
+                .onChange(of: selectedItem) { newValue in
+                    Task {
+                        if let imageData = try? await newValue?.loadTransferable(type: Data.self), let image = UIImage(data: imageData) {
+                            
+                            sendImageHandler(image)
+                        }
+                    }
+                }
+                
                 TextField("Enter message", text: $text, axis: .vertical)
                     .lineLimit(1...2)
                     .padding(.horizontal)
@@ -115,10 +132,10 @@ private struct ChatLogBottomSendBarView: View {
                             .frame(width: 30, height: 30)
                         
                         Image(systemName: "arrow.up")
-                            .foregroundColor(text.isEmpty ? Color(.systemGray5) : Color.white)
+                            .foregroundColor(text.trimmingCharacters(in: .whitespaces).isEmpty ? Color(.systemGray5) : Color.white)
                     }
                 })
-                .disabled(text.isEmpty || isSending)
+                .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty || isSending)
                 .padding(.trailing, 6)
             }
             .padding()
@@ -135,8 +152,16 @@ private struct BlueMessageView: View {
         HStack {
             Spacer()
             HStack {
-                Text(message)
-                    .foregroundColor(.white)
+                if let image = message.base64Image {
+                    Image(uiImage: image.preparingThumbnail(of: .init(width: 300, height: 300)) ?? UIImage())
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: 200, maxHeight: 200)
+                        .padding()
+                } else {
+                    Text(message)
+                        .foregroundColor(.white)
+                }
             }
             .padding()
             .background(Color.blue)
@@ -152,8 +177,17 @@ private struct WhiteMessageView: View {
     var body: some View {
         HStack {
             HStack {
-                Text(message)
-                    .foregroundColor(.black)
+                if let image = message.base64Image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: 200, maxHeight: 200)
+                        .padding()
+
+                } else {
+                    Text(message)
+                        .foregroundColor(.black)
+                }
             }
             .padding()
             .background(Color.white)

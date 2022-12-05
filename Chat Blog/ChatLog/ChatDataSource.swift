@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import UIKit
 
 final class ChatDataSource: ObservableObject {
     
@@ -86,7 +87,7 @@ final class ChatDataSource: ObservableObject {
         
         guard let user = user,
               let uid = FirebaseManager.shared.auth.currentUser?.uid,
-              let data = textMessageData()
+              let data = textMessageData(text: text)
         else { return }
         
         self.text = ""
@@ -117,7 +118,45 @@ final class ChatDataSource: ObservableObject {
         })
     }
     
-    private func textMessageData() -> [String: Any]? {
+    func sendImage(_ image: UIImage) {
+        // print("Sending: \(text)")
+        
+        self.errorMessage = ""
+        self.isSendingMessage = true
+        let string = image.base64String
+        
+        guard let user = user,
+              let uid = FirebaseManager.shared.auth.currentUser?.uid,
+              let data = textMessageData(text: string)
+        else { return }
+        
+        let doc = FirebaseManager.shared.firestore
+            .collection("messages").document(uid)
+            .collection(user.uid).document()
+        
+        doc.setData(data, completion: { err in
+            if let err = err {
+                self.errorMessage = err.localizedDescription
+                return
+            }
+            // print("Message send complete")
+            self.isSendingMessage = false
+            self.persistRecentMessageToFirestore(text: string)
+        })
+        
+        let receivingUserDoc = FirebaseManager.shared.firestore
+            .collection("messages").document(user.uid)
+            .collection(uid).document()
+        receivingUserDoc.setData(data, completion: { err in
+            if let err = err {
+                self.errorMessage = err.localizedDescription
+                return
+            }
+            // print("Recipient document set complete")
+        })
+    }
+    
+    private func textMessageData(text: String) -> [String: Any]? {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return nil }
         guard let user = user else { return nil }
         let timestamp = Firebase.Timestamp()
