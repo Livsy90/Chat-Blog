@@ -81,6 +81,7 @@ struct MainMessagesView: View {
                 }
                 .preferredColorScheme(.light)
             })
+            .toolbar(.visible, for: .tabBar)
         }
     }
     

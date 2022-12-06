@@ -89,6 +89,7 @@ struct ChatLogView: View {
                 }
             }
         }
+        .toolbar(.hidden, for: .tabBar)
         
     }
 }

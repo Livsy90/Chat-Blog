@@ -11,8 +11,23 @@ import SwiftUI
 struct Chat_BlogApp: App {
     var body: some Scene {
         WindowGroup {
-            MainMessagesView()
-                .preferredColorScheme(.light)
+            TabView {
+                MainMessagesView()
+                    .preferredColorScheme(.light)
+                 .tabItem {
+                    Image(systemName: "bubble.left.and.bubble.right.fill")
+                    Text("Chat")
+                  }
+                
+                BlogView(isShowPost: false)
+                    .preferredColorScheme(.light)
+                 .tabItem {
+                    Image(systemName: "book.fill")
+                    Text("Blog")
+                  }
+            }
+            
+           
         }
     }
 }

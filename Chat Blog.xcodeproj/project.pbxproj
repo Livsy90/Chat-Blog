@@ -23,6 +23,12 @@
 		D6329111293E43EE0024FEE1 /* UserDefaults+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6329110293E43EE0024FEE1 /* UserDefaults+adds.swift */; };
 		D6329113293E52800024FEE1 /* Date+adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6329112293E52800024FEE1 /* Date+adds.swift */; };
 		D63E0D6E293D12AD002BC3DE /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63E0D6D293D12AD002BC3DE /* ActivityIndicator.swift */; };
+		D6565FF2293F305000846DF2 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6565FF1293F305000846DF2 /* BlogViewModel.swift */; };
+		D6565FF5293F307E00846DF2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6565FF4293F307E00846DF2 /* Post.swift */; };
+		D6565FF8293F31A600846DF2 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6565FF7293F31A600846DF2 /* FirebaseFirestoreSwift */; };
+		D6565FFA293F333700846DF2 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6565FF9293F333700846DF2 /* BlogView.swift */; };
+		D6565FFC293F339100846DF2 /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6565FFB293F339100846DF2 /* CreatePost.swift */; };
+		D6565FFE293F33F100846DF2 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6565FFD293F33F100846DF2 /* TextView.swift */; };
 		D65C60322939046F00AAE189 /* RecentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C60312939046F00AAE189 /* RecentMessage.swift */; };
 		D65C603529390F4000AAE189 /* RecentMessageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C603429390F4000AAE189 /* RecentMessageRowView.swift */; };
 		D671B14A2937B1A6006F062E /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671B1492937B1A6006F062E /* MainMessagesView.swift */; };
@@ -52,6 +58,11 @@
 		D6329110293E43EE0024FEE1 /* UserDefaults+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+adds.swift"; sourceTree = "<group>"; };
 		D6329112293E52800024FEE1 /* Date+adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+adds.swift"; sourceTree = "<group>"; };
 		D63E0D6D293D12AD002BC3DE /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		D6565FF1293F305000846DF2 /* BlogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogViewModel.swift; sourceTree = "<group>"; };
+		D6565FF4293F307E00846DF2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		D6565FF9293F333700846DF2 /* BlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogView.swift; sourceTree = "<group>"; };
+		D6565FFB293F339100846DF2 /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
+		D6565FFD293F33F100846DF2 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		D65C60312939046F00AAE189 /* RecentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessage.swift; sourceTree = "<group>"; };
 		D65C603429390F4000AAE189 /* RecentMessageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessageRowView.swift; sourceTree = "<group>"; };
 		D671B1492937B1A6006F062E /* MainMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesView.swift; sourceTree = "<group>"; };
@@ -74,6 +85,7 @@
 				D60B9D8D29365CE400BAEB01 /* FirebaseAuth in Frameworks */,
 				D60B9D8F29365CE400BAEB01 /* FirebaseFirestore in Frameworks */,
 				D60B9D9129365CE400BAEB01 /* FirebaseStorage in Frameworks */,
+				D6565FF8293F31A600846DF2 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +97,7 @@
 			children = (
 				D60B9D772936526600BAEB01 /* Chat Blog */,
 				D60B9D762936526600BAEB01 /* Products */,
+				D6565FF6293F31A600846DF2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +112,7 @@
 		D60B9D772936526600BAEB01 /* Chat Blog */ = {
 			isa = PBXGroup;
 			children = (
+				D6565FF0293F303000846DF2 /* Blog */,
 				D63E0D6C293D129B002BC3DE /* Shared */,
 				D6C37FF9293BB34B00C5A5F5 /* Extensions */,
 				D671B1572937C2AE006F062E /* ChatLog */,
@@ -146,6 +160,33 @@
 				D63E0D6D293D12AD002BC3DE /* ActivityIndicator.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		D6565FF0293F303000846DF2 /* Blog */ = {
+			isa = PBXGroup;
+			children = (
+				D6565FF3293F307700846DF2 /* Models */,
+				D6565FF1293F305000846DF2 /* BlogViewModel.swift */,
+				D6565FF9293F333700846DF2 /* BlogView.swift */,
+				D6565FFB293F339100846DF2 /* CreatePost.swift */,
+				D6565FFD293F33F100846DF2 /* TextView.swift */,
+			);
+			path = Blog;
+			sourceTree = "<group>";
+		};
+		D6565FF3293F307700846DF2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D6565FF4293F307E00846DF2 /* Post.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D6565FF6293F31A600846DF2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D65C603329390F2700AAE189 /* RecentMessage */ = {
@@ -236,6 +277,7 @@
 				D60B9D8C29365CE400BAEB01 /* FirebaseAuth */,
 				D60B9D8E29365CE400BAEB01 /* FirebaseFirestore */,
 				D60B9D9029365CE400BAEB01 /* FirebaseStorage */,
+				D6565FF7293F31A600846DF2 /* FirebaseFirestoreSwift */,
 			);
 			productName = "Chat Blog";
 			productReference = D60B9D752936526600BAEB01 /* Chat Blog.app */;
@@ -298,10 +340,12 @@
 				D671B1512937B4D7006F062E /* NewMessageUsersView.swift in Sources */,
 				D60B9D8A2936532800BAEB01 /* LoginViewModel.swift in Sources */,
 				D671B1562937B62A006F062E /* NewMessageUsersViewModel.swift in Sources */,
+				D6565FF5293F307E00846DF2 /* Post.swift in Sources */,
 				D65C60322939046F00AAE189 /* RecentMessage.swift in Sources */,
 				D671B14A2937B1A6006F062E /* MainMessagesView.swift in Sources */,
 				D671B1592937C2B6006F062E /* ChatLogView.swift in Sources */,
 				D671B15E2937C4D2006F062E /* FirebaseConstants.swift in Sources */,
+				D6565FF2293F305000846DF2 /* BlogViewModel.swift in Sources */,
 				D671B1542937B52F006F062E /* ChatUser.swift in Sources */,
 				D60B9D882936532100BAEB01 /* LoginView.swift in Sources */,
 				D632910D293E33970024FEE1 /* String+adds.swift in Sources */,
@@ -310,11 +354,14 @@
 				D6329113293E52800024FEE1 /* Date+adds.swift in Sources */,
 				D63E0D6E293D12AD002BC3DE /* ActivityIndicator.swift in Sources */,
 				D60B9D7B2936526600BAEB01 /* ContentView.swift in Sources */,
+				D6565FFC293F339100846DF2 /* CreatePost.swift in Sources */,
+				D6565FFA293F333700846DF2 /* BlogView.swift in Sources */,
 				D60B9D792936526600BAEB01 /* Chat_BlogApp.swift in Sources */,
 				D6329111293E43EE0024FEE1 /* UserDefaults+adds.swift in Sources */,
 				D671B1602937C725006F062E /* Message.swift in Sources */,
 				D65C603529390F4000AAE189 /* RecentMessageRowView.swift in Sources */,
 				D671B15B2937C2C4006F062E /* ChatDataSource.swift in Sources */,
+				D6565FFE293F33F100846DF2 /* TextView.swift in Sources */,
 				D671B14C2937B1B9006F062E /* MainMessagesViewModel.swift in Sources */,
 				D632910F293E34090024FEE1 /* UIImage+adds.swift in Sources */,
 			);
@@ -544,6 +591,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D60B9D8B29365CE400BAEB01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		D6565FF7293F31A600846DF2 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D60B9D8B29365CE400BAEB01 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
